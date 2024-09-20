@@ -3,7 +3,6 @@ const { protect } = require('../middleware/authMiddleware');
 const Chat = require('../models/chatModel');
 const router = express.Router();
 
-// Get chat history between two users
 router.get('/:receiverId', protect, async (req, res) => {
     const receiverId = req.params.receiverId;
 
@@ -13,14 +12,14 @@ router.get('/:receiverId', protect, async (req, res) => {
                 { senderId: req.user.id, receiverId: receiverId },
                 { senderId: receiverId, receiverId: req.user.id },
             ],
-        }).sort({ createdAt: 1 }); // Sort by timestamp, oldest to newest
+        }).sort({ createdAt: 1 });
         res.json(messages);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Send a new message
+
 router.post('/:receiverId', protect, async (req, res) => {
     const receiverId = req.params.receiverId;
     const { message } = req.body;
